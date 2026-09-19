@@ -1,67 +1,102 @@
 "use client";
-import { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-function Particles({ count = 80 }: { count?: number }) {
-  const meshRef = useRef<THREE.Points>(null);
+export default function ParticleBackground() {
+  const mountRef = useRef<HTMLDivElement>(null);
 
-  const { positions, colors } = useMemo(() => {
+  useEffect(() => {
+    const mount = mountRef.current;
+    if (!mount) return;
+
+    // Scene
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(70, mount.clientWidth / mount.clientHeight, 0.1, 100);
+    camera.position.z = 8;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
+    renderer.setClearColor(0x000000, 0);
+    mount.appendChild(renderer.domElement);
+
+    // Particles
+    const count = 120;
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    const purpleRGB = [0.66, 0.33, 0.97];
-    const cyanRGB = [0.024, 0.714, 0.831];
 
     for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+      positions[i * 3]     = (Math.random() - 0.5) * 22;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 14;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
 
-      const t = Math.random();
-      const c = t > 0.5 ? purpleRGB : cyanRGB;
-      colors[i * 3] = c[0];
-      colors[i * 3 + 1] = c[1];
-      colors[i * 3 + 2] = c[2];
+      if (Math.random() > 0.5) {
+        // purple
+        colors[i * 3] = 0.66; colors[i * 3 + 1] = 0.33; colors[i * 3 + 2] = 0.97;
+      } else {
+        // cyan
+        colors[i * 3] = 0.024; colors[i * 3 + 1] = 0.714; colors[i * 3 + 2] = 0.831;
+      }
     }
-    return { positions, colors };
-  }, [count]);
 
-  useFrame((state) => {
-    if (!meshRef.current) return;
-    meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.03;
-    meshRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.02) * 0.1;
-  });
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-  return (
-    <points ref={meshRef}>
-      <bufferGeometry>
-        <bufferAttribute args={[positions, 3]} attach="attributes-position" count={count} />
-        <bufferAttribute args={[colors, 3]} attach="attributes-color" count={count} />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.06}
-        vertexColors
-        transparent
-        opacity={0.7}
-        sizeAttenuation
-      />
-    </points>
-  );
-}
+    const material = new THREE.PointsMaterial({
+      size: 0.06,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.75,
+      sizeAttenuation: true,
+    });
 
-export default function ParticleBackground() {
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+
+    // Animation
+    let animId: number;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      animId = requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      points.rotation.y = t * 0.03;
+      points.rotation.x = Math.sin(t * 0.02) * 0.1;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // Resize
+    const onResize = () => {
+      if (!mount) return;
+      camera.aspect = mount.clientWidth / mount.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(mount.clientWidth, mount.clientHeight);
+    };
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", onResize);
+      renderer.dispose();
+      geometry.dispose();
+      material.dispose();
+      if (mount.contains(renderer.domElement)) {
+        mount.removeChild(renderer.domElement);
+      }
+    };
+  }, []);
+
   return (
     <div
+      ref={mountRef}
       style={{
         position: "fixed",
         inset: 0,
         zIndex: 0,
         pointerEvents: "none",
       }}
-    >
-      <Canvas camera={{ position: [0, 0, 8], fov: 70 }} gl={{ alpha: true }}>
-        <Particles count={100} />
-      </Canvas>
-    </div>
+    />
   );
 }

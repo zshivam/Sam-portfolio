@@ -1,0 +1,20 @@
+{
+  "..\\node_modules\\next\\dist\\client\\components\\react-dev-overlay\\utils\\use-websocket.js -> @vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts": {
+    "id": "..\\node_modules\\next\\dist\\client\\components\\react-dev-overlay\\utils\\use-websocket.js -> @vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_next_dist_client_dev_noop-turbopack-hmr_js.js"
+    ]
+  },
+  "app\\page.tsx -> @/components/3d/ParticleBackground": {
+    "id": "app\\page.tsx -> @/components/3d/ParticleBackground",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_3d_ParticleBackground_tsx.js"
+    ]
+  },
+  "components\\HeroSection.tsx -> @/components/3d/Keyboard3D": {
+    "id": "components\\HeroSection.tsx -> @/components/3d/Keyboard3D",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_3d_Keyboard3D_tsx.js"
+    ]
+  }
+}
