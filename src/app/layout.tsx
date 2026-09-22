@@ -3,13 +3,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Shivam Sahani | Software Developer",
+  title: "sam-portfolio | Shivam Sahani",
   description:
     "Building dynamic full-stack web experiences while leveraging strong algorithmic foundations and data-driven analytical skills.",
-  keywords: ["Shivam Sahani", "Software Developer", "Full Stack", "React", "Next.js", "Portfolio"],
+  keywords: ["sam-portfolio", "Shivam Sahani", "Software Developer", "Full Stack", "React", "Next.js", "Portfolio"],
   authors: [{ name: "Shivam Sahani" }],
   openGraph: {
-    title: "Shivam Sahani | Software Developer",
+    title: "sam-portfolio | Shivam Sahani",
     description: "Full-stack software developer & multi-disciplinary builder",
     type: "website",
   },

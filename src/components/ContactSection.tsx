@@ -4,292 +4,355 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { personalInfo } from "@/lib/data";
 import {
-  FiGithub,
-  FiLinkedin,
-  FiTwitter,
-  FiInstagram,
-  FiMail,
   FiSend,
   FiMapPin,
+  FiCopy,
+  FiCheck,
+  FiCheckCircle,
+  FiMail,
+  FiClock,
 } from "react-icons/fi";
-
-const contactLinks = [
-  { icon: FiMail, label: "Email", value: personalInfo.email, href: `mailto:${personalInfo.email}`, color: "#a855f7" },
-  { icon: FiGithub, label: "GitHub", value: "@zshivam", href: personalInfo.links.github, color: "#f1f5f9" },
-  { icon: FiLinkedin, label: "LinkedIn", value: "zshivam24", href: personalInfo.links.linkedin, color: "#0077b5" },
-  { icon: FiTwitter, label: "X (Twitter)", value: "@zshiwam", href: personalInfo.links.twitter, color: "#1da1f2" },
-  { icon: FiInstagram, label: "Instagram", value: "@hishivam.in", href: personalInfo.links.instagram, color: "#e1306c" },
-];
 
 export default function ContactSection() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Mailto fallback
-    const subject = encodeURIComponent(`Portfolio Contact from ${formState.name}`);
-    const body = encodeURIComponent(`Name: ${formState.name}\nEmail: ${formState.email}\n\n${formState.message}`);
+    const subject = encodeURIComponent(`Portfolio Inquiry from ${formState.name}`);
+    const body = encodeURIComponent(
+      `Name: ${formState.name}\nEmail: ${formState.email}\n\n${formState.message}`
+    );
     window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
     setSubmitted(true);
   };
 
+  const copyEmailToClipboard = () => {
+    navigator.clipboard.writeText(personalInfo.email);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2500);
+  };
+
   return (
-    <section id="contact" className="section" ref={ref}>
+    <section id="contact" className="section" ref={ref} style={{ padding: "3.5rem 0", position: "relative" }}>
       <div className="container">
-        {/* Header */}
+        {/* Compact Header */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          style={{ marginBottom: "4rem" }}
+          transition={{ duration: 0.5 }}
+          style={{ textAlign: "center", marginBottom: "1.75rem" }}
         >
-          <p style={{ fontFamily: "var(--font-mono)", color: "var(--neon-cyan)", fontSize: "0.875rem", letterSpacing: "3px", marginBottom: "0.75rem" }}>
-            04 / CONTACT
-          </p>
-          <h2 className="section-title">Let&apos;s Connect</h2>
-          <p className="section-subtitle">
-            Whether it&apos;s a project, opportunity, or just a conversation — my inbox is always open.
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.4rem" }}>
+            <p
+              style={{
+                fontFamily: "var(--font-mono)",
+                color: "#94a3b8",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "3px",
+                textTransform: "uppercase",
+              }}
+            >
+              05 / CONTACT
+            </p>
+          </div>
+          <h2 className="section-title" style={{ fontSize: "2rem", marginBottom: "0.4rem" }}>
+            Get In Touch
+          </h2>
+          <p className="section-subtitle" style={{ margin: "0 auto", maxWidth: "520px", fontSize: "0.88rem", lineHeight: 1.5 }}>
+            Open for Software Developer roles, freelance projects, and collaborations.
           </p>
         </motion.div>
 
-        <div
+        {/* Compact Professional Contact Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.15, duration: 0.5 }}
           style={{
+            background: "#131926",
+            border: "1px solid rgba(255, 255, 255, 0.12)",
+            borderRadius: "18px",
+            padding: "1.75rem 2rem",
             display: "grid",
-            gridTemplateColumns: "1fr 1.4fr",
-            gap: "3rem",
-            alignItems: "start",
+            gridTemplateColumns: "1fr 1.2fr",
+            gap: "2rem",
+            alignItems: "center",
+            boxShadow: "0 16px 40px rgba(0, 0, 0, 0.5)",
+            maxWidth: "760px",
+            margin: "0 auto",
           }}
+          className="contact-desk-card"
         >
-          {/* Left — Contact info */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            {/* Location */}
+          {/* Left Column: Direct Info */}
+          <div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem", marginBottom: "0.5rem" }}>
+              <span
+                style={{
+                  width: "7px",
+                  height: "7px",
+                  borderRadius: "50%",
+                  background: "#22c55e",
+                  boxShadow: "0 0 6px #22c55e",
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.74rem",
+                  color: "#cbd5e1",
+                  fontWeight: 600,
+                  letterSpacing: "0.4px",
+                }}
+              >
+                Available for Hire
+              </span>
+            </div>
+
+            <h3
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "1.25rem",
+                fontWeight: 700,
+                color: "#ffffff",
+                margin: "0 0 0.35rem 0",
+              }}
+            >
+              Direct Outreach
+            </h3>
+
+            <p style={{ color: "var(--text-secondary)", fontSize: "0.84rem", lineHeight: 1.55, margin: "0 0 1rem 0" }}>
+              Have an opening or project in mind? Reach out directly via email or send a message.
+            </p>
+
+            {/* Email Box with Copy Button */}
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "0.75rem",
-                marginBottom: "2rem",
-                color: "var(--text-secondary)",
+                justifyContent: "space-between",
+                padding: "0.6rem 0.85rem",
+                borderRadius: "10px",
+                background: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid rgba(255, 255, 255, 0.14)",
+                marginBottom: "0.65rem",
               }}
             >
-              <FiMapPin color="var(--neon-cyan)" size={18} />
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.875rem" }}>
-                India 🇮🇳
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <FiMail color="#ffffff" size={15} />
+                <a
+                  href={`mailto:${personalInfo.email}`}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.82rem",
+                    color: "#ffffff",
+                    textDecoration: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  {personalInfo.email}
+                </a>
+              </div>
+              <button
+                onClick={copyEmailToClipboard}
+                style={{
+                  background: copiedEmail ? "#ffffff" : "rgba(255, 255, 255, 0.08)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  color: copiedEmail ? "#0a0f18" : "#ffffff",
+                  padding: "0.3rem 0.65rem",
+                  borderRadius: "6px",
+                  fontSize: "0.72rem",
+                  fontFamily: "var(--font-mono)",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.3rem",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                {copiedEmail ? <FiCheck size={12} /> : <FiCopy size={12} />}
+                <span>{copiedEmail ? "Copied" : "Copy"}</span>
+              </button>
+            </div>
+
+            {/* Location Pill */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                padding: "0.5rem 0.85rem",
+                borderRadius: "10px",
+                background: "rgba(255, 255, 255, 0.03)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                marginBottom: "0.65rem",
+              }}
+            >
+              <FiMapPin color="#cbd5e1" size={14} />
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.76rem", color: "var(--text-secondary)" }}>
+                India 🇮🇳 • Global Remote
               </span>
             </div>
 
-            <p
+            {/* Response Time Note */}
+            <div
               style={{
-                color: "var(--text-secondary)",
-                lineHeight: 1.75,
-                marginBottom: "2.5rem",
-                fontSize: "0.95rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.45rem",
+                padding: "0.25rem 0.5rem",
               }}
             >
-              I&apos;m currently available for freelance work and full-time roles. If you have a project
-              that needs some creative engineering or just want to say hi, feel free to reach out!
-            </p>
-
-            {/* Social links */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              {contactLinks.map(({ icon: Icon, label, value, href, color }, i) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-                  whileHover={{ x: 8 }}
-                  className="glass-card"
-                  style={{
-                    padding: "0.875rem 1.25rem",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "1rem",
-                    textDecoration: "none",
-                    color: "var(--text-primary)",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "38px",
-                      height: "38px",
-                      borderRadius: "10px",
-                      background: `${color}18`,
-                      border: `1px solid ${color}40`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <Icon size={16} color={color} />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", marginBottom: "0.1rem" }}>
-                      {label}
-                    </div>
-                    <div style={{ fontSize: "0.9rem", fontWeight: 500, color: "var(--text-secondary)" }}>
-                      {value}
-                    </div>
-                  </div>
-                  <span style={{ marginLeft: "auto", color: "var(--text-muted)", fontSize: "1rem" }}>→</span>
-                </motion.a>
-              ))}
+              <FiClock color="#94a3b8" size={13} />
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "#94a3b8" }}>
+                Response time: &lt; 24 hours
+              </span>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Right — Contact form */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="glass-card"
-            style={{ padding: "2rem" }}
-          >
+          {/* Right Column: Direct Message Form */}
+          <div>
             {submitted ? (
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 style={{
                   textAlign: "center",
-                  padding: "3rem 1rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "1rem",
+                  padding: "1.5rem 1rem",
+                  background: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  borderRadius: "12px",
                 }}
               >
-                <span style={{ fontSize: "4rem" }}>🚀</span>
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.4rem", color: "var(--text-primary)" }}>
-                  Message Sent!
-                </h3>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem" }}>
-                  Thanks for reaching out. I&apos;ll get back to you soon!
+                <FiCheckCircle size={32} color="#ffffff" style={{ margin: "0 auto 0.6rem auto" }} />
+                <h4 style={{ color: "#ffffff", fontSize: "1.05rem", fontWeight: 700, margin: "0 0 0.35rem 0" }}>
+                  Message Dispatched!
+                </h4>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", margin: "0 0 1rem 0" }}>
+                  Thank you for reaching out. I&apos;ll get back to you within 24 hours.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="btn-neon btn-neon-outline"
-                  style={{ marginTop: "0.5rem" }}
+                  style={{
+                    background: "#ffffff",
+                    color: "#0a0f18",
+                    padding: "0.45rem 1rem",
+                    borderRadius: "8px",
+                    border: "none",
+                    fontWeight: 600,
+                    fontSize: "0.78rem",
+                    cursor: "pointer",
+                  }}
                 >
                   Send Another
                 </button>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.25rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-                  Send me a message
-                </h3>
-
-                {[
-                  { id: "name", label: "Your Name", type: "text", placeholder: "Shivam Sahani", key: "name" as const },
-                  { id: "email", label: "Your Email", type: "email", placeholder: "you@example.com", key: "email" as const },
-                ].map((field) => (
-                  <div key={field.id}>
-                    <label
-                      htmlFor={field.id}
-                      style={{
-                        display: "block",
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.8rem",
-                        color: "var(--neon-purple)",
-                        marginBottom: "0.5rem",
-                        letterSpacing: "1px",
-                      }}
-                    >
-                      {field.label}
-                    </label>
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.65rem" }} className="contact-form-row">
+                  <div>
                     <input
-                      id={field.id}
-                      type={field.type}
+                      type="text"
                       required
-                      placeholder={field.placeholder}
-                      value={formState[field.key]}
-                      onChange={(e) => setFormState((p) => ({ ...p, [field.key]: e.target.value }))}
+                      placeholder="Your Name"
+                      value={formState.name}
+                      onChange={(e) => setFormState((p) => ({ ...p, name: e.target.value }))}
                       style={{
                         width: "100%",
-                        padding: "0.75rem 1rem",
-                        background: "rgba(168,85,247,0.05)",
-                        border: "1px solid rgba(168,85,247,0.2)",
+                        padding: "0.55rem 0.8rem",
+                        background: "rgba(255, 255, 255, 0.05)",
+                        border: "1px solid rgba(255, 255, 255, 0.15)",
                         borderRadius: "8px",
-                        color: "var(--text-primary)",
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "0.95rem",
+                        color: "#ffffff",
+                        fontSize: "0.84rem",
                         outline: "none",
                         transition: "border-color 0.2s ease",
                       }}
-                      onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(168,85,247,0.6)"; }}
-                      onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(168,85,247,0.2)"; }}
+                      onFocus={(e) => { e.currentTarget.style.borderColor = "#ffffff"; }}
+                      onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)"; }}
                     />
                   </div>
-                ))}
+                  <div>
+                    <input
+                      type="email"
+                      required
+                      placeholder="Your Email"
+                      value={formState.email}
+                      onChange={(e) => setFormState((p) => ({ ...p, email: e.target.value }))}
+                      style={{
+                        width: "100%",
+                        padding: "0.55rem 0.8rem",
+                        background: "rgba(255, 255, 255, 0.05)",
+                        border: "1px solid rgba(255, 255, 255, 0.15)",
+                        borderRadius: "8px",
+                        color: "#ffffff",
+                        fontSize: "0.84rem",
+                        outline: "none",
+                        transition: "border-color 0.2s ease",
+                      }}
+                      onFocus={(e) => { e.currentTarget.style.borderColor = "#ffffff"; }}
+                      onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)"; }}
+                    />
+                  </div>
+                </div>
 
                 <div>
-                  <label
-                    htmlFor="message"
-                    style={{
-                      display: "block",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.8rem",
-                      color: "var(--neon-purple)",
-                      marginBottom: "0.5rem",
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    Message
-                  </label>
                   <textarea
-                    id="message"
                     required
-                    placeholder="Hey Shivam, I'd like to talk about..."
-                    rows={5}
+                    placeholder="Hi Shivam, let's discuss an opportunity or project..."
+                    rows={3}
                     value={formState.message}
                     onChange={(e) => setFormState((p) => ({ ...p, message: e.target.value }))}
                     style={{
                       width: "100%",
-                      padding: "0.75rem 1rem",
-                      background: "rgba(168,85,247,0.05)",
-                      border: "1px solid rgba(168,85,247,0.2)",
+                      padding: "0.55rem 0.8rem",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
                       borderRadius: "8px",
-                      color: "var(--text-primary)",
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "0.95rem",
+                      color: "#ffffff",
+                      fontSize: "0.84rem",
                       outline: "none",
-                      resize: "vertical",
+                      resize: "none",
                       transition: "border-color 0.2s ease",
                     }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(168,85,247,0.6)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(168,85,247,0.2)"; }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = "#ffffff"; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)"; }}
                   />
                 </div>
 
-                <motion.button
+                <button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="btn-neon btn-neon-primary"
-                  style={{ justifyContent: "center", marginTop: "0.25rem" }}
+                  className="btn-action-send"
+                  style={{
+                    width: "100%",
+                    padding: "0.7rem 1.2rem",
+                    fontSize: "0.88rem",
+                  }}
                 >
-                  <FiSend size={16} />
-                  Send Message
-                </motion.button>
+                  <span>Send Message</span>
+                  <span className="btn-icon-fly">
+                    <FiSend size={14} />
+                  </span>
+                </button>
               </form>
             )}
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
 
       <style>{`
-        @media (max-width: 900px) {
-          #contact .container > div[style] {
+        @media (max-width: 860px) {
+          .contact-desk-card {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+          }
+        }
+        @media (max-width: 560px) {
+          .contact-form-row {
             grid-template-columns: 1fr !important;
           }
         }

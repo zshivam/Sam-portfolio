@@ -1,6 +1,52 @@
 "use client";
 import { personalInfo } from "@/lib/data";
-import { FiGithub, FiLinkedin, FiTwitter, FiInstagram } from "react-icons/fi";
+import {
+  SiGithub,
+  SiInstagram,
+  SiX,
+  SiGmail,
+  SiThreads,
+} from "react-icons/si";
+import { FaLinkedinIn } from "react-icons/fa6";
+
+const socialLinks = [
+  {
+    name: "GitHub",
+    icon: SiGithub,
+    url: personalInfo.links.github,
+    className: "social-github",
+  },
+  {
+    name: "LinkedIn",
+    icon: FaLinkedinIn,
+    url: personalInfo.links.linkedin,
+    className: "social-linkedin",
+  },
+  {
+    name: "X (Twitter)",
+    icon: SiX,
+    url: personalInfo.links.twitter,
+    className: "social-twitter",
+  },
+  {
+    name: "Instagram",
+    icon: SiInstagram,
+    url: personalInfo.links.instagram,
+    className: "social-instagram",
+  },
+  {
+    name: "Gmail",
+    icon: SiGmail,
+    url: `mailto:${personalInfo.email}`,
+    className: "social-gmail",
+  },
+  {
+    name: "Threads",
+    icon: SiThreads,
+    url: "https://www.threads.net/@hishivam.in",
+    className: "social-threads",
+  },
+];
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -8,72 +54,97 @@ export default function Footer() {
   return (
     <footer
       style={{
-        borderTop: "1px solid rgba(168,85,247,0.15)",
-        padding: "2.5rem 1.5rem",
-        background: "rgba(6,182,212,0.01)",
+        borderTop: "1px solid rgba(255, 255, 255, 0.12)",
+        padding: "3rem 1.5rem 2.5rem",
+        background: "rgba(6, 10, 20, 0.95)",
+        position: "relative",
+        zIndex: 10,
       }}
     >
       <div
-        className="container"
+        className="container footer-container"
         style={{
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: "1rem",
+          justifyContent: "center",
+          gap: "1.75rem",
         }}
       >
-        {/* Logo */}
-        <span
+        {/* Top: Logo & Professional Title */}
+        <div style={{ textAlign: "center" }}>
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "1.2rem",
+              color: "#ffffff",
+              fontWeight: 700,
+              letterSpacing: "1px",
+            }}
+          >
+            &lt;Sam /&gt;
+          </span>
+          <p
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "0.85rem",
+              color: "#94a3b8",
+              marginTop: "0.25rem",
+              margin: 0,
+            }}
+          >
+            Shivam Sahani • Full-Stack Software Developer
+          </p>
+        </div>
+
+        {/* Center: Social Media App Logos (JUST Logos with tailored platform hovers) */}
+        <div
           style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "1rem",
-            background: "var(--gradient-hero)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            fontWeight: 700,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.85rem",
+            flexWrap: "wrap",
           }}
         >
-          &lt;Sam /&gt;
-        </span>
+          {socialLinks.map((item) => {
+            const Icon = item.icon;
+            return (
+              <a
+                key={item.name}
+                href={item.url}
+                target="_blank"
+                rel="noreferrer"
+                title={item.name}
+                aria-label={item.name}
+                className={`social-tile-btn ${item.className}`}
+              >
+                <Icon size={20} />
+              </a>
+            );
+          })}
+        </div>
 
-        {/* Copyright */}
-        <p
+        {/* Bottom: Copyright & Attribution */}
+        <div
           style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.8rem",
-            color: "var(--text-muted)",
+            borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+            width: "100%",
+            maxWidth: "600px",
+            paddingTop: "1.25rem",
             textAlign: "center",
           }}
         >
-          © {year} {personalInfo.name} — Built with Next.js + Three.js
-        </p>
-
-        {/* Social icons */}
-        <div style={{ display: "flex", gap: "0.75rem" }}>
-          {[
-            { icon: FiGithub, href: personalInfo.links.github },
-            { icon: FiLinkedin, href: personalInfo.links.linkedin },
-            { icon: FiTwitter, href: personalInfo.links.twitter },
-            { icon: FiInstagram, href: personalInfo.links.instagram },
-          ].map(({ icon: Icon, href }, i) => (
-            <a
-              key={i}
-              href={href}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                color: "var(--text-muted)",
-                transition: "color 0.2s ease",
-                display: "flex",
-              }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--neon-cyan)")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-muted)")}
-            >
-              <Icon size={18} />
-            </a>
-          ))}
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.76rem",
+              color: "#64748b",
+              margin: 0,
+            }}
+          >
+            © {year} Shivam Sahani. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

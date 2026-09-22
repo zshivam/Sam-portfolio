@@ -1,29 +1,8 @@
 "use client";
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { personalInfo } from "@/lib/data";
 import { FiGithub, FiLinkedin, FiTwitter, FiInstagram, FiMail } from "react-icons/fi";
-
-const Keyboard3D = dynamic(() => import("@/components/3d/Keyboard3D"), {
-  ssr: false,
-  loading: () => (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "var(--text-muted)",
-        fontFamily: "var(--font-mono)",
-        fontSize: "0.875rem",
-      }}
-    >
-      Loading 3D scene...
-    </div>
-  ),
-});
 
 const socialLinks = [
   { icon: FiGithub, href: personalInfo.links.github, label: "GitHub" },
@@ -37,225 +16,262 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="section grid-pattern"
       style={{
         minHeight: "100vh",
         display: "flex",
-        flexDirection: "column",
+        alignItems: "center",
         justifyContent: "center",
-        paddingTop: "80px",
         position: "relative",
         overflow: "hidden",
+        padding: "100px 1.5rem 60px 1.5rem",
       }}
     >
-      {/* Grid content layout */}
+      {/* Centered Hero Content */}
       <div
-        className="container"
+        className="container hero-centered-container"
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "3rem",
+          maxWidth: "860px",
+          width: "100%",
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          minHeight: "85vh",
+          textAlign: "center",
+          position: "relative",
+          zIndex: 2,
         }}
       >
-        {/* Left — Text content */}
-        <div>
-          {/* Status badge */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.6rem",
-              padding: "0.4rem 1rem",
-              borderRadius: "100px",
-              background: "rgba(16, 185, 129, 0.1)",
-              border: "1px solid rgba(16, 185, 129, 0.3)",
-              marginBottom: "1.5rem",
-            }}
-          >
-            <span className="glow-dot" style={{ background: "#10b981", boxShadow: "0 0 10px #10b981" }} />
-            <span
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.8rem",
-                color: "#10b981",
-              }}
-            >
-              Available for opportunities
-            </span>
-          </motion.div>
-
-          {/* Name */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.7 }}
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
-              fontWeight: 800,
-              lineHeight: 1.1,
-              marginBottom: "0.75rem",
-              color: "var(--text-primary)",
-            }}
-          >
-            {personalInfo.name.split(" ").map((word, i) => (
-              <span
-                key={i}
-                style={
-                  i === 1
-                    ? {
-                        background: "var(--gradient-hero)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                      }
-                    : {}
-                }
-              >
-                {word}{i < personalInfo.name.split(" ").length - 1 ? " " : ""}
-              </span>
-            ))}
-          </motion.h1>
-
-          {/* Animated role */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "clamp(1rem, 2vw, 1.3rem)",
-              color: "var(--neon-cyan)",
-              marginBottom: "1.5rem",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-            }}
-          >
-            <span style={{ color: "var(--neon-purple)" }}>&gt;</span>
-            <TypeAnimation
-              sequence={[
-                "Software Developer",
-                2000,
-                "Full-Stack Engineer",
-                2000,
-                "Problem Solver",
-                2000,
-                "Open Source Builder",
-                2000,
-              ]}
-              wrapper="span"
-              speed={50}
-              repeat={Infinity}
-            />
-          </motion.div>
-
-          {/* Bio */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            style={{
-              color: "var(--text-secondary)",
-              fontSize: "1rem",
-              lineHeight: 1.75,
-              maxWidth: "500px",
-              marginBottom: "2rem",
-            }}
-          >
-            {personalInfo.bio}
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.75, duration: 0.6 }}
-            style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "2.5rem" }}
-          >
-            <a href="#projects" className="btn-neon btn-neon-primary">
-              View Projects
-            </a>
-            <a href="#contact" className="btn-neon btn-neon-outline">
-              Get In Touch
-            </a>
-          </motion.div>
-
-          {/* Social links */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.6 }}
-            style={{ display: "flex", gap: "1rem", alignItems: "center" }}
-          >
-            {socialLinks.map(({ icon: Icon, href, label }) => (
-              <motion.a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={label}
-                whileHover={{ scale: 1.2, y: -4 }}
-                whileTap={{ scale: 0.9 }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "42px",
-                  height: "42px",
-                  borderRadius: "10px",
-                  border: "1px solid rgba(168,85,247,0.25)",
-                  background: "rgba(168,85,247,0.05)",
-                  color: "var(--text-secondary)",
-                  transition: "all 0.2s ease",
-                  textDecoration: "none",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = "var(--neon-cyan)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(6,182,212,0.4)";
-                  (e.currentTarget as HTMLElement).style.background = "rgba(6,182,212,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(168,85,247,0.25)";
-                  (e.currentTarget as HTMLElement).style.background = "rgba(168,85,247,0.05)";
-                }}
-              >
-                <Icon size={18} />
-              </motion.a>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Right — 3D Keyboard */}
+        {/* Status badge */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
           style={{
-            height: "420px",
-            position: "relative",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            padding: "0.45rem 1.15rem",
+            borderRadius: "100px",
+            background: "rgba(15, 23, 42, 0.85)",
+            border: "1px solid rgba(255, 255, 255, 0.18)",
+            boxShadow: "0 0 24px rgba(0, 0, 0, 0.6)",
+            marginBottom: "1.5rem",
           }}
         >
-          {/* Glow backdrop */}
-          <div
+          <span style={{ position: "relative", display: "flex", width: "8px", height: "8px" }}>
+            <span
+              className="animate-ping"
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: "50%",
+                background: "#22c55e",
+                opacity: 0.75,
+              }}
+            />
+            <span
+              style={{
+                position: "relative",
+                display: "inline-flex",
+                borderRadius: "50%",
+                width: "8px",
+                height: "8px",
+                background: "#22c55e",
+                boxShadow: "0 0 10px #22c55e",
+              }}
+            />
+          </span>
+          <span
             style={{
-              position: "absolute",
-              inset: "-20%",
-              background:
-                "radial-gradient(ellipse at center, rgba(168,85,247,0.15) 0%, rgba(6,182,212,0.08) 50%, transparent 70%)",
-              pointerEvents: "none",
-              zIndex: 0,
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.82rem",
+              fontWeight: 600,
+              color: "#f1f5f9",
+              letterSpacing: "0.5px",
             }}
+          >
+            Available for Software Developer Roles
+          </span>
+        </motion.div>
+
+        {/* Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.7 }}
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(2.4rem, 5.2vw, 4.4rem)",
+            fontWeight: 800,
+            lineHeight: 1.15,
+            marginBottom: "1rem",
+            color: "#ffffff",
+            letterSpacing: "-0.5px",
+            textShadow: "0 4px 30px rgba(0,0,0,0.8)",
+          }}
+        >
+          Hi, I&apos;m <span style={{ color: "#ffffff" }}>Shivam</span> 👋
+          <br />
+          <span
+            style={{
+              fontSize: "clamp(1.35rem, 2.8vw, 2.2rem)",
+              fontWeight: 700,
+              background: "linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              display: "inline-block",
+              marginTop: "0.35rem",
+              lineHeight: 1.25,
+            }}
+          >
+            Full-Stack Software Developer
+          </span>
+        </motion.h1>
+
+        {/* Punchy Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          style={{
+            fontSize: "clamp(0.95rem, 1.6vw, 1.12rem)",
+            color: "#94a3b8",
+            lineHeight: 1.68,
+            marginBottom: "1.4rem",
+            maxWidth: "620px",
+            margin: "0 auto 1.4rem auto",
+            textShadow: "0 2px 14px rgba(0,0,0,0.8)",
+          }}
+        >
+          Specializing in React, Next.js, Node.js, and Python. Building fast, secure, and production-ready applications with clean architecture and real user value.
+        </motion.p>
+
+        {/* Animated role ticker */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "clamp(0.88rem, 1.5vw, 1.02rem)",
+            color: "#cbd5e1",
+            marginBottom: "2rem",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.5rem",
+            padding: "0.4rem 1.1rem",
+            borderRadius: "100px",
+            background: "rgba(15, 23, 42, 0.7)",
+            border: "1px solid rgba(255, 255, 255, 0.12)",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
+          }}
+        >
+          <span style={{ color: "#22c55e" }}>&gt;</span>
+          <TypeAnimation
+            sequence={[
+              "Full Stack Developer",
+              2000,
+              "MERN & Next.js Specialist",
+              2000,
+              "Python & Backend Engineer",
+              2000,
+              "Creative Problem Solving",
+              2000,
+            ]}
+            wrapper="span"
+            speed={50}
+            repeat={Infinity}
           />
-          <div style={{ position: "relative", width: "100%", height: "100%", zIndex: 1 }}>
-            <Keyboard3D />
-          </div>
+        </motion.div>
+
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.65, duration: 0.6 }}
+          style={{
+            display: "flex",
+            gap: "1rem",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            marginBottom: "2.2rem",
+          }}
+        >
+          <a
+            href="#projects"
+            className="btn-action-explore"
+            style={{
+              padding: "0.85rem 1.75rem",
+              fontSize: "0.95rem",
+            }}
+          >
+            <span>Explore My Work</span>
+            <span className="btn-icon-down">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" style={{ width: "16px", height: "16px" }}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+              </svg>
+            </span>
+          </a>
+          <a
+            href="#contact"
+            className="btn-action-connect"
+            style={{
+              padding: "0.85rem 1.75rem",
+              fontSize: "0.95rem",
+            }}
+          >
+            <span className="btn-icon-wave" style={{ fontSize: "1.1rem" }}>👋</span>
+            <span>Let&apos;s Connect</span>
+          </a>
+        </motion.div>
+
+        {/* Social links */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          style={{ display: "flex", gap: "0.85rem", justifyContent: "center", alignItems: "center" }}
+        >
+          {socialLinks.map(({ icon: Icon, href, label }) => (
+            <motion.a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={label}
+              whileHover={{ scale: 1.15, y: -3 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "42px",
+                height: "42px",
+                borderRadius: "12px",
+                border: "1px solid rgba(255, 255, 255, 0.16)",
+                background: "rgba(15, 23, 42, 0.75)",
+                backdropFilter: "blur(10px)",
+                color: "#cbd5e1",
+                transition: "all 0.2s ease",
+                textDecoration: "none",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.35)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "#ffffff";
+                (e.currentTarget as HTMLElement).style.borderColor = "#ffffff";
+                (e.currentTarget as HTMLElement).style.background = "rgba(255, 255, 255, 0.14)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "#cbd5e1";
+                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255, 255, 255, 0.16)";
+                (e.currentTarget as HTMLElement).style.background = "rgba(15, 23, 42, 0.75)";
+              }}
+            >
+              <Icon size={18} />
+            </motion.a>
+          ))}
         </motion.div>
       </div>
 
@@ -266,37 +282,35 @@ export default function HeroSection() {
         transition={{ delay: 1.5 }}
         style={{
           position: "absolute",
-          bottom: "2rem",
+          bottom: "1.75rem",
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "0.5rem",
+          gap: "0.4rem",
+          pointerEvents: "none",
         }}
       >
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "2px" }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--text-muted)", letterSpacing: "2px" }}>
           SCROLL
         </span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
+          animate={{ y: [0, 6, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           style={{
             width: "1px",
-            height: "40px",
+            height: "32px",
             background: "linear-gradient(var(--neon-purple), transparent)",
           }}
         />
       </motion.div>
 
       <style>{`
-        @media (max-width: 900px) {
-          #hero .container {
-            grid-template-columns: 1fr !important;
-            text-align: center;
-          }
-          #hero .container > div:last-child {
-            height: 280px !important;
+        @media (max-width: 600px) {
+          #hero {
+            padding-top: 85px !important;
+            padding-bottom: 50px !important;
           }
         }
       `}</style>

@@ -6,9 +6,8 @@ import { personalInfo } from "@/lib/data";
 const navLinks = [
   { href: "#hero", label: "Home" },
   { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
   { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
+  { href: "#contact", label: "Connect" },
 ];
 
 export default function Navbar() {
@@ -100,7 +99,7 @@ export default function Navbar() {
                   fontWeight: 500,
                   color:
                     active === link.href
-                      ? "var(--neon-cyan)"
+                      ? "#ffffff"
                       : "var(--text-secondary)",
                   textDecoration: "none",
                   transition: "color 0.2s ease",
@@ -115,21 +114,155 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Resume Button */}
-        <a
-          href={personalInfo.links.resume}
-          target="_blank"
-          rel="noreferrer"
-          className="btn-neon btn-neon-primary"
-          style={{ fontSize: "0.85rem", padding: "0.5rem 1.25rem" }}
-        >
-          Resume ↗
-        </a>
+        {/* Desktop Resume Button */}
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <a
+            href={personalInfo.links.resume}
+            target="_blank"
+            rel="noreferrer"
+            className="btn-neon btn-neon-primary nav-desktop"
+            style={{ fontSize: "0.85rem", padding: "0.5rem 1.25rem" }}
+          >
+            Resume ↗
+          </a>
+
+          {/* Mobile Hamburger Toggle Button */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle mobile menu"
+            className="nav-mobile-toggle"
+            style={{
+              background: "rgba(255, 255, 255, 0.08)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              color: "var(--text-primary)",
+              borderRadius: "10px",
+              width: "42px",
+              height: "42px",
+              display: "none",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          >
+            <div style={{ width: "20px", height: "14px", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <span
+                style={{
+                  width: "100%",
+                  height: "2px",
+                  background: mobileOpen ? "#ffffff" : "var(--text-primary)",
+                  transition: "all 0.25s ease",
+                  transformOrigin: "left",
+                  transform: mobileOpen ? "rotate(45deg) translate(2px, -2px)" : "none",
+                }}
+              />
+              <span
+                style={{
+                  width: "100%",
+                  height: "2px",
+                  background: "#ffffff",
+                  transition: "all 0.25s ease",
+                  opacity: mobileOpen ? 0 : 1,
+                }}
+              />
+              <span
+                style={{
+                  width: "100%",
+                  height: "2px",
+                  background: mobileOpen ? "#ffffff" : "var(--text-primary)",
+                  transition: "all 0.25s ease",
+                  transformOrigin: "left",
+                  transform: mobileOpen ? "rotate(-45deg) translate(2px, 2px)" : "none",
+                }}
+              />
+            </div>
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Drawer Menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            style={{
+              overflow: "hidden",
+              background: "rgba(8, 12, 24, 0.98)",
+              borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
+              backdropFilter: "blur(20px)",
+              padding: "1rem 0 1.5rem",
+            }}
+          >
+            <ul
+              style={{
+                listStyle: "none",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.85rem",
+                padding: "0 0.5rem",
+              }}
+            >
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={() => {
+                      setActive(link.href);
+                      setMobileOpen(false);
+                    }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "0.75rem 1rem",
+                      borderRadius: "10px",
+                      fontFamily: "var(--font-display)",
+                      fontSize: "1rem",
+                      fontWeight: 600,
+                      color: active === link.href ? "#ffffff" : "var(--text-secondary)",
+                      background: active === link.href ? "rgba(255, 255, 255, 0.1)" : "transparent",
+                      border: active === link.href ? "1px solid rgba(255, 255, 255, 0.25)" : "1px solid transparent",
+                      textDecoration: "none",
+                      transition: "all 0.2s ease",
+                    }}
+                  >
+                    <span>{link.label}</span>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "#94a3b8" }}>
+                      →
+                    </span>
+                  </a>
+                </li>
+              ))}
+
+              <li style={{ marginTop: "0.5rem", paddingTop: "0.75rem", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                <a
+                  href={personalInfo.links.resume}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-neon btn-neon-primary"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                    padding: "0.75rem",
+                    fontSize: "0.95rem",
+                  }}
+                >
+                  View Resume ↗
+                </a>
+              </li>
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <style>{`
         @media (max-width: 768px) {
           .nav-desktop { display: none !important; }
+          .nav-mobile-toggle { display: flex !important; }
         }
         .nav-link:hover { color: var(--neon-cyan) !important; }
       `}</style>
