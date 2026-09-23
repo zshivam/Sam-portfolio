@@ -211,7 +211,7 @@ export const projects: ProjectItem[] = [
     },
     tech: ["Next.js", "Three.js", "TypeScript", "React", "Framer Motion", "TailwindCSS"],
     github: "https://github.com/zshivam/Sam-Portfolio",
-    live: "https://sam-portfolio.vercel.app",
+    live: "https://sam-portfolio-beta-dun.vercel.app",
     gradient: "from-cyan-500 to-purple-600",
     icon: "⚡",
     image: "/projects/portfolio.png",

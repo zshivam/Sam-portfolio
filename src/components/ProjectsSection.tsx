@@ -22,7 +22,7 @@ const projectUrls: Record<string, string> = {
   "KapCart": "kapcart.store",
   "Pankaj Studio": "pankajstudio.in",
   "InfoForm": "info-form-my-app.vercel.app",
-  "Sam's Portfolio": "sam-portfolio.vercel.app",
+  "Sam's Portfolio": "sam-portfolio-beta-dun.vercel.app",
 };
 
 export default function ProjectsSection() {

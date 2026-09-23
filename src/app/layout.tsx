@@ -13,6 +13,13 @@ export const metadata: Metadata = {
     description: "Full-stack software developer & multi-disciplinary builder",
     type: "website",
   },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
