@@ -49,67 +49,71 @@ const quickInfo = [
   { label: "Status", value: "Open for Opportunities" },
 ];
 
-// Interactive Perspectives (Compact, direct, exact engineering details)
+// Interactive Perspectives
 const aboutPillars = {
   story: {
     id: "story",
-    label: "01. Profile",
+    label: "01. Story & Drive",
     icon: FiCompass,
-    badge: "01. Profile & Focus",
-    title: "Full-Stack Developer & Problem Solver",
-    summary:
-      "Full-stack engineer with strong algorithmic foundations and hands-on experience building fast, scalable web apps. Focused on end-to-end architecture, low latency, and intuitive interfaces.",
+    badge: "01. The Human Behind the Code",
+    title: "Curious Problem Solver with an Obsession for Craft",
+    lead: "I am a full-stack developer with strong algorithmic foundations and a passion for turning complex problems into intuitive, high-velocity digital products.",
+    description:
+      "My journey started with a fascination for algorithmic thinking and system optimization. Over the years, that curiosity grew into designing and launching full-scale production platforms—from multi-filter booking systems to hyperlocal high-concurrency delivery apps. I care as much about user delight, zero-CLS interfaces, and fluid micro-interactions as I do about clean database modeling and efficient REST APIs.",
     points: [
-      "End-to-End Execution: Clean database schemas, robust REST APIs, and responsive frontends.",
-      "Algorithmic Discipline: Applying optimized data structures and problem-solving patterns.",
-      "Production Rigor: Type-safe codebases, smooth micro-interactions, and fast load times.",
+      "User-Centric Architecture: Engineering software that feels instantaneous, looks clean, and solves practical human needs.",
+      "Algorithmic Precision: Applying solid data structures, optimization patterns, and logical discipline across every feature.",
+      "End-to-End Ownership: Leading features from whiteboarding and database schema design through to testing and Vercel/Docker deployment.",
     ],
-    metric: "Full-Cycle Developer",
+    metric: "End-to-End Execution",
   },
   architecture: {
     id: "architecture",
-    label: "02. Tech Approach",
+    label: "02. How I Build",
     icon: FiCpu,
-    badge: "02. Architecture & Standards",
-    title: "Speed, Type Safety & Concurrency",
-    summary:
-      "Engineering modular web systems designed for performance. Combining Next.js, React 18, and TypeScript on the client with Node.js and FastAPI services on the server.",
+    badge: "02. System Architecture & Standards",
+    title: "Engineered for High Concurrency, Speed & Reliability",
+    lead: "I believe speed is a core product feature. I engineer systems to respond in milliseconds and scale without friction.",
+    description:
+      "Modern full-stack development requires seamless cohesion between frontend dynamism and backend stability. On the client, I leverage Next.js App Router, React 18, and TypeScript for full type safety. On the server, I build modular, asynchronous REST services in Node.js and FastAPI, paired with indexed PostgreSQL or MongoDB datastores and edge caching to achieve consistent sub-50ms response times.",
     points: [
-      "Strict Type Safety: Comprehensive TypeScript contracts across frontend and backend boundaries.",
-      "Scalable Databases: Indexed PostgreSQL and MongoDB stores with edge caching.",
-      "Reliable Deployment: Containerized Docker workflows and automated CI/CD pipelines.",
+      "Type-Safe Everywhere: Strict TypeScript contracts across frontends, server actions, and API boundaries.",
+      "Database Scalability: Compound indexing, relational normalization, and geospatial queries tuned for peak performance.",
+      "Resilient Edge & Cloud: Deploying with CI/CD automation, edge caching headers, and containerized Docker environments.",
     ],
-    metric: "Sub-50ms APIs",
+    metric: "Sub-50ms API Responses",
   },
   impact: {
     id: "impact",
-    label: "03. Track Record",
+    label: "03. Real Impact",
     icon: FiLayers,
-    badge: "03. Production Projects",
-    title: "Proven Platforms Serving Real Needs",
-    summary:
-      "Developed production-grade applications with custom business logic—from dual-role reservation platforms to hyperlocal delivery and dynamic form engines.",
+    badge: "03. Delivered Production Value",
+    title: "Real Platforms Serving Real Users with High Reliability",
+    lead: "Every project in my portfolio is an engineered solution built with deliberate business logic and production rigor.",
+    description:
+      "Rather than cookie-cutter templates, I build platforms that solve distinctive market problems. From Rent-A-Vibe's dynamic availability scheduling and dual-role portals, to KapCart's hyperlocal grocery routing, and inFOrm's dynamic data collection engine—each application demonstrates quantifiable uptime, responsive architecture, and 98+ Google Lighthouse scores.",
     points: [
-      "Rent-A-Vibe: Dual-role marketplace with real-time reservation conflict prevention.",
-      "KapCart: Hyperlocal delivery platform engineered for high-concurrency order placement.",
-      "inFOrm & Pankaj Studio: Modern web systems with 98+ Google Lighthouse performance.",
+      "Rent-A-Vibe: Dual-role marketplace with real-time reservation conflict prevention and dynamic pricing algorithms.",
+      "KapCart: Hyperlocal delivery architecture designed for high-concurrency order placement and live status updates.",
+      "inFOrm & Pankaj Studio: Modern web systems delivering high conversion rates, accessibility compliance, and silky-smooth animations.",
     ],
-    metric: "98+ Lighthouse",
+    metric: "98+ Lighthouse & Production Proof",
   },
   workflow: {
     id: "workflow",
-    label: "04. Philosophy",
+    label: "04. Work Philosophy",
     icon: FiActivity,
     badge: "04. Collaboration & Culture",
-    title: "Velocity, Ownership & Adaptability",
-    summary:
-      "Proactive builder who emphasizes clear communication, self-documenting code, and shipping iterative increments that solve real user needs quickly.",
+    title: "High Velocity, Clear Communication & Adaptability",
+    lead: "Software development is a team sport where clear technical communication and rapid iteration lead to winning products.",
+    description:
+      "I bring proactive communication, clean documentation, and an adaptable mindset to every engineering team. Whether working alongside product managers, designers, or backend peers, I prioritize unblocking teammates, writing self-documenting code, and shipping iterative increments that gather real user feedback quickly.",
     points: [
-      "Agile Delivery: Breaking complex milestones into verifiable sprint deliverables.",
-      "Clean Codebase: Modular components, clean git history, and clear API documentation.",
-      "Continuous Growth: Rapidly adopting modern web standards and engineering tools.",
+      "Agile & Fast Iteration: Breaking ambitious product milestones into clean, deliverable sprints with verifiable quality.",
+      "Self-Documenting Code: Clean commit histories, modular component hierarchies, and comprehensive API documentation.",
+      "Continuous Learning: Actively exploring emerging web standards, cloud patterns, and developer tools to keep products modern.",
     ],
-    metric: "High Velocity",
+    metric: "Fast Onboarding & High Velocity",
   },
 };
 
@@ -135,7 +139,7 @@ export default function AboutSection() {
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           transition={{ duration: 0.6 }}
-          style={{ marginBottom: "1.75rem" }}
+          style={{ marginBottom: "3rem" }}
         >
           <p
             style={{
@@ -143,7 +147,7 @@ export default function AboutSection() {
               color: "#94a3b8",
               fontSize: "0.85rem",
               letterSpacing: "3px",
-              marginBottom: "0.5rem",
+              marginBottom: "0.75rem",
               textTransform: "uppercase",
             }}
           >
@@ -152,7 +156,7 @@ export default function AboutSection() {
           <h2
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(2rem, 5vw, 3rem)",
+              fontSize: "clamp(2rem, 5vw, 3.2rem)",
               fontWeight: 700,
               color: "#ffffff",
               margin: 0,
@@ -167,7 +171,7 @@ export default function AboutSection() {
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1.65fr",
-            gap: "2.5rem",
+            gap: "3.5rem",
             alignItems: "start",
           }}
         >
@@ -176,43 +180,29 @@ export default function AboutSection() {
             variants={fadeUp}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
-            transition={{ duration: 0.0, delay: 0.0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
             className="about-avatar-col"
             style={{ position: "relative" }}
           >
-            {/* 3D Floating Avatar in Studio Badge Circle */}
+            {/* 3D Bouncing Character in White Circle */}
             <div
               className="about-avatar-wrapper"
               style={{
                 position: "relative",
                 width: "100%",
-                maxWidth: "280px",
+                maxWidth: "320px",
                 aspectRatio: "1/1",
                 margin: "0 auto",
                 borderRadius: "50%",
-                background:
-                  "radial-gradient(circle at 50% 32%, #293548 0%, #151d2a 55%, #090e17 100%)",
-                border: "2px solid rgba(255, 255, 255, 0.22)",
-                boxShadow:
-                  "0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 40px rgba(255, 255, 255, 0.06), 0 0 30px rgba(255, 255, 255, 0.08)",
+                background: "#ffffff",
+                border: "4px solid rgba(255, 255, 255, 0.4)",
+                boxShadow: "0 16px 45px rgba(0, 0, 0, 0.55), 0 0 35px rgba(255, 255, 255, 0.25)",
                 overflow: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              {/* Outer soft ambient halo */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: "-2px",
-                  borderRadius: "50%",
-                  background:
-                    "linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, transparent 60%, rgba(255, 255, 255, 0.1) 100%)",
-                  pointerEvents: "none",
-                  zIndex: 0,
-                }}
-              />
               <div style={{ position: "relative", width: "100%", height: "100%", zIndex: 1 }}>
                 <Image3D />
               </div>
@@ -225,7 +215,7 @@ export default function AboutSection() {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 gap: "0.85rem",
-                marginTop: "1.25rem",
+                marginTop: "1.75rem",
               }}
             >
               {stats.map((stat, i) => (
@@ -373,21 +363,21 @@ export default function AboutSection() {
               })}
             </div>
 
-            {/* Dynamic Pillar Card (Compact & exact) */}
+            {/* Dynamic Pillar Card */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.22 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25 }}
                 style={{
                   background: "#131926",
                   border: "1px solid rgba(255, 255, 255, 0.12)",
-                  borderRadius: "16px",
-                  padding: "1.35rem 1.65rem",
-                  marginBottom: "1.25rem",
-                  boxShadow: "0 12px 30px rgba(0,0,0,0.4)",
+                  borderRadius: "18px",
+                  padding: "1.8rem 2rem",
+                  marginBottom: "1.5rem",
+                  boxShadow: "0 15px 35px rgba(0,0,0,0.4)",
                 }}
               >
                 <div
@@ -397,16 +387,16 @@ export default function AboutSection() {
                     alignItems: "center",
                     flexWrap: "wrap",
                     gap: "0.5rem",
-                    marginBottom: "0.5rem",
+                    marginBottom: "0.6rem",
                   }}
                 >
                   <span
                     style={{
                       fontFamily: "var(--font-mono)",
-                      fontSize: "0.72rem",
+                      fontSize: "0.75rem",
                       color: "#94a3b8",
                       textTransform: "uppercase",
-                      letterSpacing: "1.2px",
+                      letterSpacing: "1.5px",
                       fontWeight: 700,
                     }}
                   >
@@ -415,11 +405,11 @@ export default function AboutSection() {
                   <span
                     style={{
                       fontFamily: "var(--font-mono)",
-                      fontSize: "0.7rem",
+                      fontSize: "0.72rem",
                       color: "#ffffff",
                       background: "rgba(255, 255, 255, 0.08)",
                       border: "1px solid rgba(255, 255, 255, 0.18)",
-                      padding: "0.2rem 0.6rem",
+                      padding: "0.25rem 0.65rem",
                       borderRadius: "100px",
                       fontWeight: 600,
                     }}
@@ -431,10 +421,10 @@ export default function AboutSection() {
                 <h3
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: "clamp(1.15rem, 1.8vw, 1.38rem)",
+                    fontSize: "clamp(1.25rem, 2vw, 1.55rem)",
                     fontWeight: 700,
                     color: "#ffffff",
-                    margin: "0 0 0.5rem 0",
+                    margin: "0 0 0.75rem 0",
                     lineHeight: 1.3,
                   }}
                 >
@@ -443,20 +433,31 @@ export default function AboutSection() {
 
                 <p
                   style={{
-                    color: "rgba(226, 232, 240, 0.88)",
-                    fontSize: "0.88rem",
-                    lineHeight: 1.55,
-                    marginBottom: "0.95rem",
+                    color: "rgba(226, 232, 240, 0.92)",
+                    fontSize: "0.95rem",
+                    lineHeight: 1.65,
+                    marginBottom: "0.85rem",
                   }}
                 >
-                  {currentPillar.summary}
+                  {currentPillar.lead}
+                </p>
+
+                <p
+                  style={{
+                    color: "rgba(203, 213, 225, 0.82)",
+                    fontSize: "0.88rem",
+                    lineHeight: 1.65,
+                    marginBottom: "1.25rem",
+                  }}
+                >
+                  {currentPillar.description}
                 </p>
 
                 <ul
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: "0.48rem",
+                    gap: "0.65rem",
                     listStyle: "none",
                     padding: 0,
                     margin: 0,
@@ -468,14 +469,14 @@ export default function AboutSection() {
                       style={{
                         display: "flex",
                         alignItems: "flex-start",
-                        gap: "0.55rem",
-                        fontSize: "0.84rem",
-                        color: "rgba(226, 232, 240, 0.86)",
-                        lineHeight: 1.45,
+                        gap: "0.65rem",
+                        fontSize: "0.88rem",
+                        color: "rgba(226, 232, 240, 0.88)",
+                        lineHeight: 1.55,
                       }}
                     >
-                      <div style={{ flexShrink: 0, marginTop: "2px", color: "#22c55e" }}>
-                        <FiCheckCircle size={14} />
+                      <div style={{ flexShrink: 0, marginTop: "2px", color: "#ffffff" }}>
+                        <FiCheckCircle size={15} />
                       </div>
                       <span>{pt}</span>
                     </li>
