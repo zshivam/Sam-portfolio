@@ -1,16 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import { personalInfo } from "@/lib/data";
-import { FiGithub, FiLinkedin, FiTwitter, FiInstagram, FiMail } from "react-icons/fi";
 
-const socialLinks = [
-  { icon: FiGithub, href: personalInfo.links.github, label: "GitHub" },
-  { icon: FiLinkedin, href: personalInfo.links.linkedin, label: "LinkedIn" },
-  { icon: FiTwitter, href: personalInfo.links.twitter, label: "Twitter" },
-  { icon: FiInstagram, href: personalInfo.links.instagram, label: "Instagram" },
-  { icon: FiMail, href: `mailto:${personalInfo.email}`, label: "Email" },
-];
 
 export default function HeroSection() {
   return (
@@ -196,7 +187,7 @@ export default function HeroSection() {
             gap: "1rem",
             justifyContent: "center",
             flexWrap: "wrap",
-            marginBottom: "2.2rem",
+            marginBottom: "0.5rem",
           }}
         >
           <a
@@ -225,53 +216,6 @@ export default function HeroSection() {
             <span className="btn-icon-wave" style={{ fontSize: "1.1rem" }}>👋</span>
             <span>Let&apos;s Connect</span>
           </a>
-        </motion.div>
-
-        {/* Social links */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          style={{ display: "flex", gap: "0.85rem", justifyContent: "center", alignItems: "center" }}
-        >
-          {socialLinks.map(({ icon: Icon, href, label }) => (
-            <motion.a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={label}
-              whileHover={{ scale: 1.15, y: -3 }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "42px",
-                height: "42px",
-                borderRadius: "12px",
-                border: "1px solid rgba(255, 255, 255, 0.16)",
-                background: "rgba(15, 23, 42, 0.75)",
-                backdropFilter: "blur(10px)",
-                color: "#cbd5e1",
-                transition: "all 0.2s ease",
-                textDecoration: "none",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.35)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#ffffff";
-                (e.currentTarget as HTMLElement).style.borderColor = "#ffffff";
-                (e.currentTarget as HTMLElement).style.background = "rgba(255, 255, 255, 0.14)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#cbd5e1";
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255, 255, 255, 0.16)";
-                (e.currentTarget as HTMLElement).style.background = "rgba(15, 23, 42, 0.75)";
-              }}
-            >
-              <Icon size={18} />
-            </motion.a>
-          ))}
         </motion.div>
       </div>
 

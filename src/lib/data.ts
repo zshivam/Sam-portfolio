@@ -189,7 +189,7 @@ export const projects: ProjectItem[] = [
   },
   {
     id: 5,
-    title: "sam-portfolio",
+    title: "Sam's Portfolio",
     description:
       "An interactive 3D developer portfolio showcasing WebGL spatial holograms, Instagram reel-style vertical sticky project reels, continuous marquee loops, and deep architectural dossiers.",
     longDescription:
@@ -217,11 +217,4 @@ export const projects: ProjectItem[] = [
     image: "/projects/portfolio.png",
     category: "Interactive 3D Web App",
   },
-];
-
-export const keyboardRows = [
-  ["React", "Next.js", "TypeScript", "Python", "Node.js", "FastAPI"],
-  ["C++", "JavaScript", "HTML5", "CSS3", "Tailwind", "Vue.js"],
-  ["MongoDB", "PostgreSQL", "Docker", "Git", "GitHub", "Excel"],
-  ["Express", "Django", "MySQL", "Kubernetes", "Figma", "Flutter"],
 ];

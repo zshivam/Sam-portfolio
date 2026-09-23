@@ -5,7 +5,6 @@ import { useInView } from "react-intersection-observer";
 import { personalInfo } from "@/lib/data";
 import {
   FiSend,
-  FiMapPin,
   FiCopy,
   FiCheck,
   FiCheckCircle,
@@ -36,21 +35,21 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="section" ref={ref} style={{ padding: "3.5rem 0", position: "relative" }}>
+    <section id="contact" className="section" ref={ref} style={{ padding: "2.75rem 0 2rem 0", position: "relative" }}>
       <div className="container">
         {/* Compact Header */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          style={{ textAlign: "center", marginBottom: "1.75rem" }}
+          style={{ textAlign: "center", marginBottom: "1.25rem" }}
         >
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.4rem" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.35rem" }}>
             <p
               style={{
                 fontFamily: "var(--font-mono)",
                 color: "#94a3b8",
-                fontSize: "0.78rem",
+                fontSize: "0.76rem",
                 fontWeight: 700,
                 letterSpacing: "3px",
                 textTransform: "uppercase",
@@ -59,37 +58,37 @@ export default function ContactSection() {
               05 / CONTACT
             </p>
           </div>
-          <h2 className="section-title" style={{ fontSize: "2rem", marginBottom: "0.4rem" }}>
+          <h2 className="section-title" style={{ fontSize: "1.75rem", marginBottom: "0.3rem" }}>
             Get In Touch
           </h2>
-          <p className="section-subtitle" style={{ margin: "0 auto", maxWidth: "520px", fontSize: "0.88rem", lineHeight: 1.5 }}>
-            Open for Software Developer roles, freelance projects, and collaborations.
+          <p className="section-subtitle" style={{ margin: "0 auto", maxWidth: "480px", fontSize: "0.84rem", lineHeight: 1.5 }}>
+            Open for developer roles, freelance projects, and collaborations.
           </p>
         </motion.div>
 
         {/* Compact Professional Contact Card */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.15, duration: 0.5 }}
           style={{
             background: "#131926",
             border: "1px solid rgba(255, 255, 255, 0.12)",
-            borderRadius: "18px",
-            padding: "1.75rem 2rem",
+            borderRadius: "16px",
+            padding: "1.35rem 1.65rem",
             display: "grid",
             gridTemplateColumns: "1fr 1.2fr",
-            gap: "2rem",
+            gap: "1.5rem",
             alignItems: "center",
-            boxShadow: "0 16px 40px rgba(0, 0, 0, 0.5)",
-            maxWidth: "760px",
+            boxShadow: "0 14px 35px rgba(0, 0, 0, 0.5)",
+            maxWidth: "680px",
             margin: "0 auto",
           }}
           className="contact-desk-card"
         >
           {/* Left Column: Direct Info */}
           <div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem", marginBottom: "0.5rem" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem", marginBottom: "0.4rem" }}>
               <span
                 style={{
                   width: "7px",
@@ -102,7 +101,7 @@ export default function ContactSection() {
               <span
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "0.74rem",
+                  fontSize: "0.72rem",
                   color: "#cbd5e1",
                   fontWeight: 600,
                   letterSpacing: "0.4px",
@@ -115,17 +114,17 @@ export default function ContactSection() {
             <h3
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "1.25rem",
+                fontSize: "1.15rem",
                 fontWeight: 700,
                 color: "#ffffff",
-                margin: "0 0 0.35rem 0",
+                margin: "0 0 0.25rem 0",
               }}
             >
               Direct Outreach
             </h3>
 
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.84rem", lineHeight: 1.55, margin: "0 0 1rem 0" }}>
-              Have an opening or project in mind? Reach out directly via email or send a message.
+            <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", lineHeight: 1.5, margin: "0 0 0.85rem 0" }}>
+              Have an opening or project in mind? Reach out directly via email or send a quick note.
             </p>
 
             {/* Email Box with Copy Button */}
@@ -134,20 +133,20 @@ export default function ContactSection() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                padding: "0.6rem 0.85rem",
-                borderRadius: "10px",
+                padding: "0.5rem 0.75rem",
+                borderRadius: "8px",
                 background: "rgba(255, 255, 255, 0.05)",
                 border: "1px solid rgba(255, 255, 255, 0.14)",
-                marginBottom: "0.65rem",
+                marginBottom: "0.55rem",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <FiMail color="#ffffff" size={15} />
+              <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
+                <FiMail color="#ffffff" size={14} />
                 <a
                   href={`mailto:${personalInfo.email}`}
                   style={{
                     fontFamily: "var(--font-mono)",
-                    fontSize: "0.82rem",
+                    fontSize: "0.78rem",
                     color: "#ffffff",
                     textDecoration: "none",
                     fontWeight: 600,
@@ -162,40 +161,21 @@ export default function ContactSection() {
                   background: copiedEmail ? "#ffffff" : "rgba(255, 255, 255, 0.08)",
                   border: "1px solid rgba(255, 255, 255, 0.2)",
                   color: copiedEmail ? "#0a0f18" : "#ffffff",
-                  padding: "0.3rem 0.65rem",
-                  borderRadius: "6px",
-                  fontSize: "0.72rem",
+                  padding: "0.25rem 0.55rem",
+                  borderRadius: "5px",
+                  fontSize: "0.7rem",
                   fontFamily: "var(--font-mono)",
                   fontWeight: 600,
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.3rem",
+                  gap: "0.25rem",
                   transition: "all 0.2s ease",
                 }}
               >
-                {copiedEmail ? <FiCheck size={12} /> : <FiCopy size={12} />}
+                {copiedEmail ? <FiCheck size={11} /> : <FiCopy size={11} />}
                 <span>{copiedEmail ? "Copied" : "Copy"}</span>
               </button>
-            </div>
-
-            {/* Location Pill */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                padding: "0.5rem 0.85rem",
-                borderRadius: "10px",
-                background: "rgba(255, 255, 255, 0.03)",
-                border: "1px solid rgba(255, 255, 255, 0.08)",
-                marginBottom: "0.65rem",
-              }}
-            >
-              <FiMapPin color="#cbd5e1" size={14} />
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.76rem", color: "var(--text-secondary)" }}>
-                India 🇮🇳 • Global Remote
-              </span>
             </div>
 
             {/* Response Time Note */}
@@ -203,12 +183,12 @@ export default function ContactSection() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "0.45rem",
-                padding: "0.25rem 0.5rem",
+                gap: "0.4rem",
+                padding: "0.15rem 0.25rem",
               }}
             >
-              <FiClock color="#94a3b8" size={13} />
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "#94a3b8" }}>
+              <FiClock color="#94a3b8" size={12} />
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#94a3b8" }}>
                 Response time: &lt; 24 hours
               </span>
             </div>
