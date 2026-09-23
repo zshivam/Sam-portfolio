@@ -5,45 +5,87 @@ export default function CustomCursor() {
   const dotRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
-  const mouse  = useRef({ x: 0, y: 0 });
-  const ring   = useRef({ x: 0, y: 0 });
-  const animId = useRef<number>(0);
+  const mouse     = useRef({ x: -100, y: -100 });
+  const ring      = useRef({ x: -100, y: -100 });
+  const animId    = useRef<number>(0);
+  const isClicking = useRef(false);
+  const isHovering = useRef(false);
+  const isEnabled  = useRef(true);
 
-  const [clicking, setClicking] = useState(false);
-  const [hovering, setHovering] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Hide native cursor globally
-    document.documentElement.style.cursor = "none";
+    // Only enable on desktop pointer devices
+    if (typeof window === "undefined") return;
+    const isTouch = window.matchMedia("(pointer: coarse)").matches || !window.matchMedia("(hover: hover)").matches;
+    if (isTouch) {
+      isEnabled.current = false;
+      return;
+    }
+
+    setMounted(true);
+    document.documentElement.classList.add("has-custom-cursor");
 
     const onMove = (e: MouseEvent) => {
-      mouse.current = { x: e.clientX, y: e.clientY };
-
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      const clickable = el?.closest("a, button, [role=button], input, textarea, select, label, [onclick]");
-      setHovering(!!clickable);
+      mouse.current.x = e.clientX;
+      mouse.current.y = e.clientY;
     };
 
-    const onDown = () => setClicking(true);
-    const onUp   = () => setClicking(false);
+    const onDown = () => {
+      isClicking.current = true;
+    };
 
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mousedown", onDown);
-    window.addEventListener("mouseup",   onUp);
+    const onUp = () => {
+      isClicking.current = false;
+    };
 
-    // Smooth trailing physics loop
+    // Use event delegation for hover state - ZERO forced layout reflows
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("a, button, [role=button], input, textarea, select, label, .clickable, .tech-tile")) {
+        isHovering.current = true;
+        if (ringRef.current) ringRef.current.classList.add("cursor-hover");
+        if (dotRef.current) dotRef.current.classList.add("cursor-hover");
+      }
+    };
+
+    const onMouseOut = (e: MouseEvent) => {
+      const related = e.relatedTarget as HTMLElement | null;
+      if (!related?.closest("a, button, [role=button], input, textarea, select, label, .clickable, .tech-tile")) {
+        isHovering.current = false;
+        if (ringRef.current) ringRef.current.classList.remove("cursor-hover");
+        if (dotRef.current) dotRef.current.classList.remove("cursor-hover");
+      }
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mousedown", onDown, { passive: true });
+    window.addEventListener("mouseup",   onUp, { passive: true });
+    document.addEventListener("mouseover", onMouseOver, { passive: true });
+    document.addEventListener("mouseout",  onMouseOut, { passive: true });
+
+    // Hardware accelerated physics loop
+    let currentDotScale = 1;
+    let currentRingScale = 1;
+
     const tick = () => {
-      // Ring follows mouse with fast smooth response
-      ring.current.x += (mouse.current.x - ring.current.x) * 0.32;
-      ring.current.y += (mouse.current.y - ring.current.y) * 0.32;
+      // Ring follows mouse with smooth lerp
+      ring.current.x += (mouse.current.x - ring.current.x) * 0.28;
+      ring.current.y += (mouse.current.y - ring.current.y) * 0.28;
+
+      const targetDotScale = isClicking.current ? 0.5 : 1;
+      const targetRingScale = isClicking.current ? 0.75 : isHovering.current ? 1.35 : 1;
+
+      currentDotScale += (targetDotScale - currentDotScale) * 0.2;
+      currentRingScale += (targetRingScale - currentRingScale) * 0.2;
 
       if (dotRef.current) {
         dotRef.current.style.transform =
-          `translate3d(${mouse.current.x}px, ${mouse.current.y}px, 0)`;
+          `translate3d(${mouse.current.x}px, ${mouse.current.y}px, 0) scale(${currentDotScale})`;
       }
       if (ringRef.current) {
         ringRef.current.style.transform =
-          `translate3d(${ring.current.x}px, ${ring.current.y}px, 0)`;
+          `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) scale(${currentRingScale})`;
       }
 
       animId.current = requestAnimationFrame(tick);
@@ -51,19 +93,24 @@ export default function CustomCursor() {
     animId.current = requestAnimationFrame(tick);
 
     return () => {
-      document.documentElement.style.cursor = "";
+      document.documentElement.classList.remove("has-custom-cursor");
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("mouseup",   onUp);
+      document.removeEventListener("mouseover", onMouseOver);
+      document.removeEventListener("mouseout",  onMouseOut);
       cancelAnimationFrame(animId.current);
     };
   }, []);
+
+  if (!mounted) return null;
 
   return (
     <>
       {/* Instant center dot */}
       <div
         ref={dotRef}
+        className="custom-cursor-dot"
         style={{
           position:     "fixed",
           top:           0,
@@ -74,13 +121,9 @@ export default function CustomCursor() {
           marginTop:    "-3px",
           borderRadius: "50%",
           background:    "#ffffff",
-          boxShadow:     hovering
-            ? "0 0 10px 2px rgba(255, 255, 255, 0.8)"
-            : "0 0 8px 1px rgba(255, 255, 255, 0.5)",
+          boxShadow:     "0 0 8px 1px rgba(255, 255, 255, 0.6)",
           pointerEvents: "none",
           zIndex:        99999,
-          transform:     clicking ? "scale(0.5)" : "scale(1)",
-          transition:    "box-shadow 0.2s ease, transform 0.1s ease",
           willChange:    "transform",
         }}
       />
@@ -88,30 +131,38 @@ export default function CustomCursor() {
       {/* Smooth trailing ring */}
       <div
         ref={ringRef}
+        className="custom-cursor-ring"
         style={{
           position:      "fixed",
           top:            0,
           left:           0,
-          width:          hovering ? "40px" : "28px",
-          height:         hovering ? "40px" : "28px",
-          marginLeft:    hovering ? "-20px" : "-14px",
-          marginTop:     hovering ? "-20px" : "-14px",
+          width:          "28px",
+          height:         "28px",
+          marginLeft:    "-14px",
+          marginTop:     "-14px",
           borderRadius:  "50%",
-          border:        `1.5px solid ${hovering ? "#ffffff" : "rgba(255, 255, 255, 0.45)"}`,
-          background:    hovering ? "rgba(255, 255, 255, 0.12)" : "transparent",
-          boxShadow:     hovering
-            ? "0 0 14px rgba(255, 255, 255, 0.4)"
-            : "0 0 8px rgba(255, 255, 255, 0.15)",
+          border:        "1.5px solid rgba(255, 255, 255, 0.45)",
+          background:    "transparent",
+          boxShadow:     "0 0 8px rgba(255, 255, 255, 0.15)",
           pointerEvents: "none",
           zIndex:        99998,
-          transform:     clicking ? "scale(0.8)" : "scale(1)",
-          transition:    "width 0.2s ease, height 0.2s ease, margin 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease",
+          transition:    "border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease",
           willChange:    "transform",
         }}
       />
 
       <style>{`
-        * { cursor: none !important; }
+        html.has-custom-cursor, html.has-custom-cursor * {
+          cursor: none !important;
+        }
+        .custom-cursor-ring.cursor-hover {
+          border-color: #ffffff !important;
+          background: rgba(255, 255, 255, 0.14) !important;
+          box-shadow: 0 0 16px rgba(255, 255, 255, 0.45) !important;
+        }
+        .custom-cursor-dot.cursor-hover {
+          box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.9) !important;
+        }
       `}</style>
     </>
   );

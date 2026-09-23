@@ -118,6 +118,8 @@ export default function ProjectsSection() {
                   boxShadow:
                     "0 -10px 30px rgba(0, 0, 0, 0.6), 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 25px rgba(168, 85, 247, 0.08)",
                   minHeight: "440px",
+                  transform: "translateZ(0)",
+                  willChange: "transform",
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 }}
               >

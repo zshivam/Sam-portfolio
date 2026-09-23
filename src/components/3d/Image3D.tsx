@@ -61,8 +61,8 @@ export default function Image3D() {
     const W = mount.clientWidth, H = mount.clientHeight;
 
     /* ── WebGL Renderer ── */
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(W, H);
     renderer.setClearColor(0, 0);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -177,13 +177,17 @@ export default function Image3D() {
     };
     window.addEventListener("mousemove", onMouseMove);
 
-    /* ── Animation Loop: Lively Buoyant Bounce (No 360 Rotation) ── */
+    /* ── Animation Loop: Lively Buoyant Bounce (Only runs when in view) ── */
     let animId: number;
     const clock = new THREE.Clock();
     const ppa = pGeo.attributes.position;
+    let isVisible = true;
+    let isTabVisible = !document.hidden;
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
+      if (!isVisible || !isTabVisible) return;
+
       const t = clock.getElapsedTime();
 
       // No continuous 360° rotation! Character stays facing forward with gentle interactive tilt
@@ -210,6 +214,21 @@ export default function Image3D() {
     };
     animate();
 
+    /* ── IntersectionObserver: Pause when out of view ── */
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(mount);
+
+    /* ── Tab visibility ── */
+    const onVisibilityChange = () => {
+      isTabVisible = !document.hidden;
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
     /* ── Resize Handler ── */
     const onResize = () => {
       if (!mount) return;
@@ -221,9 +240,16 @@ export default function Image3D() {
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
       renderer.dispose();
+      charGeo.dispose();
+      frontMat.dispose();
+      rMat.dispose();
+      pGeo.dispose();
+      pMat.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
     };
   }, []);

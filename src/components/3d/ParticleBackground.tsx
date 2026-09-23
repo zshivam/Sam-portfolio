@@ -14,8 +14,8 @@ export default function ParticleBackground() {
     const camera = new THREE.PerspectiveCamera(70, mount.clientWidth / mount.clientHeight, 0.1, 100);
     camera.position.z = 8;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
@@ -57,9 +57,16 @@ export default function ParticleBackground() {
     // Animation
     let animId: number;
     const clock = new THREE.Clock();
+    let isPaused = false;
+
+    const onVisibilityChange = () => {
+      isPaused = document.hidden;
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
+      if (isPaused) return;
       const t = clock.getElapsedTime();
       points.rotation.y = t * 0.03;
       points.rotation.x = Math.sin(t * 0.02) * 0.1;
@@ -78,6 +85,7 @@ export default function ParticleBackground() {
 
     return () => {
       cancelAnimationFrame(animId);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("resize", onResize);
       renderer.dispose();
       geometry.dispose();

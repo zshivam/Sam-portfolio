@@ -16,8 +16,15 @@ export default function Navbar() {
   const [active, setActive] = useState("#hero");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll);
+    let prevScrolled = false;
+    const onScroll = () => {
+      const nextScrolled = window.scrollY > 40;
+      if (nextScrolled !== prevScrolled) {
+        prevScrolled = nextScrolled;
+        setScrolled(nextScrolled);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 

@@ -37,9 +37,14 @@ export default function CharacterCursor() {
     const mount = mountRef.current;
     if (!mount) return;
 
+    // Skip on touch/mobile devices to save battery and eliminate lag
+    if (window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768) {
+      return;
+    }
+
     /* ── Renderer ───────────────────────────────────────── */
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
@@ -49,12 +54,14 @@ export default function CharacterCursor() {
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 0, 8);
 
-    /* ── Screen → World helper ──────────────────────────── */
-    const toWorld = (cx: number, cy: number) => {
-      const v   = new THREE.Vector3((cx/window.innerWidth)*2-1, -(cy/window.innerHeight)*2+1, 0.5).unproject(camera);
-      const dir = v.sub(camera.position).normalize();
-      const t   = -camera.position.z / dir.z;
-      return camera.position.clone().addScaledVector(dir, t);
+    /* ── Screen → World helper (zero GC allocation) ─────── */
+    const _v = new THREE.Vector3();
+    const _dir = new THREE.Vector3();
+    const toWorld = (cx: number, cy: number, target: THREE.Vector3) => {
+      _v.set((cx / window.innerWidth) * 2 - 1, -(cy / window.innerHeight) * 2 + 1, 0.5).unproject(camera);
+      _dir.copy(_v).sub(camera.position).normalize();
+      const t = -camera.position.z / _dir.z;
+      target.copy(camera.position).addScaledVector(_dir, t);
     };
 
     /* ── Lights ─────────────────────────────────────────── */
@@ -178,15 +185,16 @@ export default function CharacterCursor() {
     const cursorWorld  = new THREE.Vector3();
     const charPos      = new THREE.Vector3();
     const charVelocity = new THREE.Vector3();
+    const toTarget     = new THREE.Vector3();
     let targetAngle    = 0;
     let currentAngle   = 0;
     let spinAngle      = 0;
 
     const onMouseMove = (e: MouseEvent) => {
-      const w = toWorld(e.clientX, e.clientY);
-      cursorWorld.set(w.x, w.y, 0);
+      toWorld(e.clientX, e.clientY, cursorWorld);
+      cursorWorld.z = 0;
     };
-    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
 
     /* ── Helper: transition to new state ───────────────── */
     const goTo = (s: State) => { state = s; stateTime = 0; };
@@ -195,16 +203,27 @@ export default function CharacterCursor() {
     let animId: number;
     const clock = new THREE.Clock();
     let lastT   = 0;
+    let isPaused = false;
+
+    const onVisibilityChange = () => {
+      isPaused = document.hidden;
+      if (!isPaused) {
+        lastT = clock.getElapsedTime();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
+      if (isPaused) return;
+
       const t  = clock.getElapsedTime();
       const dt = Math.min(t - lastT, 0.05);
       lastT    = t;
       stateTime += dt;
 
       /* ── Physics: move char toward cursor ─── */
-      const toTarget = cursorWorld.clone().sub(charPos);
+      toTarget.copy(cursorWorld).sub(charPos);
       const dist = toTarget.length();
       let speed = 0;
 
@@ -432,6 +451,7 @@ export default function CharacterCursor() {
       cancelAnimationFrame(animId);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
     };
