@@ -181,7 +181,7 @@ export default function CharacterCursor() {
       lean:  0,
     };
 
-    /* ── Movement tracking ──────────────────────────────── */
+    /* ── Movement tracking (Zero heavy math on mousemove) ── */
     const cursorWorld  = new THREE.Vector3();
     const charPos      = new THREE.Vector3();
     const charVelocity = new THREE.Vector3();
@@ -190,9 +190,14 @@ export default function CharacterCursor() {
     let currentAngle   = 0;
     let spinAngle      = 0;
 
+    let rawMouseX = window.innerWidth / 2;
+    let rawMouseY = window.innerHeight / 2;
+    let hasMoved = false;
+
     const onMouseMove = (e: MouseEvent) => {
-      toWorld(e.clientX, e.clientY, cursorWorld);
-      cursorWorld.z = 0;
+      rawMouseX = e.clientX;
+      rawMouseY = e.clientY;
+      hasMoved = true;
     };
     window.addEventListener("mousemove", onMouseMove, { passive: true });
 
@@ -216,6 +221,11 @@ export default function CharacterCursor() {
     const animate = () => {
       animId = requestAnimationFrame(animate);
       if (isPaused) return;
+
+      if (hasMoved) {
+        toWorld(rawMouseX, rawMouseY, cursorWorld);
+        cursorWorld.z = 0;
+      }
 
       const t  = clock.getElapsedTime();
       const dt = Math.min(t - lastT, 0.05);

@@ -29,14 +29,26 @@ export default function CustomCursor() {
     const onMove = (e: MouseEvent) => {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
+      if (dotRef.current) {
+        dotRef.current.style.transform =
+          `translate3d(${e.clientX}px, ${e.clientY}px, 0) scale(${isClicking.current ? 0.5 : 1})`;
+      }
     };
 
     const onDown = () => {
       isClicking.current = true;
+      if (dotRef.current) {
+        dotRef.current.style.transform =
+          `translate3d(${mouse.current.x}px, ${mouse.current.y}px, 0) scale(0.5)`;
+      }
     };
 
     const onUp = () => {
       isClicking.current = false;
+      if (dotRef.current) {
+        dotRef.current.style.transform =
+          `translate3d(${mouse.current.x}px, ${mouse.current.y}px, 0) scale(1)`;
+      }
     };
 
     // Use event delegation for hover state - ZERO forced layout reflows
@@ -64,25 +76,17 @@ export default function CustomCursor() {
     document.addEventListener("mouseover", onMouseOver, { passive: true });
     document.addEventListener("mouseout",  onMouseOut, { passive: true });
 
-    // Hardware accelerated physics loop
-    let currentDotScale = 1;
+    // Hardware accelerated physics loop for trailing ring
     let currentRingScale = 1;
 
     const tick = () => {
       // Ring follows mouse with smooth lerp
-      ring.current.x += (mouse.current.x - ring.current.x) * 0.28;
-      ring.current.y += (mouse.current.y - ring.current.y) * 0.28;
+      ring.current.x += (mouse.current.x - ring.current.x) * 0.35;
+      ring.current.y += (mouse.current.y - ring.current.y) * 0.35;
 
-      const targetDotScale = isClicking.current ? 0.5 : 1;
-      const targetRingScale = isClicking.current ? 0.75 : isHovering.current ? 1.35 : 1;
+      const targetRingScale = isClicking.current ? 0.75 : isHovering.current ? 1.4 : 1;
+      currentRingScale += (targetRingScale - currentRingScale) * 0.25;
 
-      currentDotScale += (targetDotScale - currentDotScale) * 0.2;
-      currentRingScale += (targetRingScale - currentRingScale) * 0.2;
-
-      if (dotRef.current) {
-        dotRef.current.style.transform =
-          `translate3d(${mouse.current.x}px, ${mouse.current.y}px, 0) scale(${currentDotScale})`;
-      }
       if (ringRef.current) {
         ringRef.current.style.transform =
           `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) scale(${currentRingScale})`;

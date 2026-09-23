@@ -166,16 +166,14 @@ export default function Image3D() {
     const points = new THREE.Points(pGeo, pMat);
     scene.add(points);
 
-    /* ── Mouse Parallax / Interactive Tilt ── */
+    /* ── Mouse Parallax / Interactive Tilt (Zero forced reflows) ── */
     let mouseX = 0, mouseY = 0;
     const onMouseMove = (e: MouseEvent) => {
-      const rect = mount.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-      mouseX = Math.max(-1, Math.min(1, x));
-      mouseY = Math.max(-1, Math.min(1, y));
+      if (!isVisible || !isTabVisible) return;
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = (e.clientY / window.innerHeight) * 2 - 1;
     };
-    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
 
     /* ── Animation Loop: Lively Buoyant Bounce (Only runs when in view) ── */
     let animId: number;
